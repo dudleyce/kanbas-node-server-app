@@ -10,7 +10,7 @@ import AssignmentRoutes from "./Kanbas/assignments/routes.js";
 const app = express();
 app.use(cors({
     credentials: true,
-    origin: [process.env.FRONTEND_URL, "http://localhost:3000"]
+    origin: ["http://localhost:3000", "https://main--luxury-selkie-3211f8.netlify.app/#/Kanbas/Dashboard"]
   }));
 app.use(express.json());
 app.listen(process.env.PORT || 4000);

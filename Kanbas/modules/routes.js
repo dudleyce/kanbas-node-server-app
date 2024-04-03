@@ -1,39 +1,38 @@
-import db from "../Database/index.js";
+import Database from "../Database/index.js";
 function ModuleRoutes(app) {
   
-  app.put("/api/modules/:mid", (req, res) => {
-    const { mid } = req.params;
-    const moduleIndex = db.modules.findIndex(
-      (m) => m._id === mid);
-    db.modules[moduleIndex] = {
-      ...db.modules[moduleIndex],
+  app.put("/api/modules/:moduleId", (req, res) => {
+    const { moduleId } = req.params;
+    const moduleIndex = Database.modules.findIndex(
+      (m) => m._id === moduleId);
+    Database.modules[moduleIndex] = {
+      ...Database.modules[moduleIndex],
       ...req.body
     };
     res.sendStatus(204);
   });
 
-  app.delete("/api/modules/:mid", (req, res) => {
-    const { mid } = req.params;
-    db.modules = db.modules.filter((m) => m._id !== mid);
+  app.delete("/api/modules/:moduleId", (req, res) => {
+    const { moduleId } = req.params;
+    Database.modules = Database.modules.filter((m) => m._id !== moduleId);
     res.sendStatus(200);
   });
 
   
-  app.post("/api/courses/:cid/modules", (req, res) => {
-    const { cid } = req.params;
+  app.post("/api/courses/:courseId/modules", (req, res) => {
+    const { courseId } = req.params;
     const newModule = {
       ...req.body,
-      course: cid,
+      course: courseId,
       _id: new Date().getTime().toString(),
     };
-    db.modules.push(newModule);
+    Database.modules.push(newModule);
     res.send(newModule);
   });
 
-  app.get("/api/courses/:cid/modules", (req, res) => {
-    const { cid } = req.params;
-    const modules = db.modules
-      .filter((m) => m.course === cid);
+  app.get("/api/courses/:courseId/modules", (req, res) => {
+    const { courseId } = req.params;
+    const modules = Database.modules.filter((m) => m.course === courseId);
     res.send(modules);
   });
 }

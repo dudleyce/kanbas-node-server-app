@@ -1,39 +1,27 @@
-import Database from "../Database/index.js";
-function ModuleRoutes(app) {
-  
-  app.put("/api/modules/:moduleId", (req, res) => {
-    const { moduleId } = req.params;
-    const moduleIndex = Database.modules.findIndex(
-      (m) => m._id === moduleId);
-    Database.modules[moduleIndex] = {
-      ...Database.modules[moduleIndex],
-      ...req.body
+import * as dao from "./dao.js";
+export default function ModuleRoutes(app) {
+    const addModule = async (req, res) => {
+        const { courseId } = req.params;
+        const module = await dao.addModule({ ...req.body, course: courseId });
+        res.json(module);
     };
-    res.sendStatus(204);
-  });
-
-  app.delete("/api/modules/:moduleId", (req, res) => {
-    const { moduleId } = req.params;
-    Database.modules = Database.modules.filter((m) => m._id !== moduleId);
-    res.sendStatus(200);
-  });
-
-  
-  app.post("/api/courses/:courseId/modules", (req, res) => {
-    const { courseId } = req.params;
-    const newModule = {
-      ...req.body,
-      course: courseId,
-      _id: new Date().getTime().toString(),
+    const deleteModule = async (req, res) => {
+        const status = await dao.deleteModule(req.params.moduleId);
+        res.json(status);
     };
-    Database.modules.push(newModule);
-    res.send(newModule);
-  });
-
-  app.get("/api/courses/:courseId/modules", (req, res) => {
-    const { courseId } = req.params;
-    const modules = Database.modules.filter((m) => m.course === courseId);
-    res.send(modules);
-  });
+    const findModulesForCourse = async (req, res) => {
+        const { courseId } = req.params;
+        const modules = await dao.findModulesForCourse(courseId);
+        res.json(modules);
+        return;
+    };
+    const updateModule = async (req, res) => {
+        const { moduleId } = req.params;
+        const status = await dao.updateModule(moduleId, req.body);
+        res.json(status);
+    };
+    app.post("/api/courses/:courseId/modules", addModule);
+    app.delete("/api/modules/:moduleId", deleteModule);
+    app.get("/api/courses/:courseId/modules", findModulesForCourse);
+    app.put("/api/modules/:moduleId", updateModule);
 }
-export default ModuleRoutes;

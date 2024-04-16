@@ -29,6 +29,7 @@ const sessionOptions = {
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
+  
 };
 if (process.env.NODE_ENV !== "development") {
   sessionOptions.proxy = true;
@@ -50,8 +51,17 @@ app.use(session(sessionOptions));
 //  origin: ["http://localhost:3000", "https://main--luxury-selkie-3211f8.netlify.app"]
 //}));
 
+if (process.env.NODE_ENV !== "development") {
+  sessionOptions.proxy = true;
+  sessionOptions.cookie = {
+    sameSite: "none",
+    secure: true,
+    domain: process.env.HTTP_SERVER_DOMAIN,
+  };
+}  
 
-app.use(express.json());
+
+app.use(process.env.PORT || express.json());
 UserRoutes(app);
 app.listen(4000);
 Hello(app);

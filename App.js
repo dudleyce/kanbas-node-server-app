@@ -20,8 +20,8 @@ mongoose.connect(CONNECTION_STRING).catch(error => console.error('Error connecti
 //mongoose.connect("mongodb://127.0.0.1:27017");
 const app = express();
 const corsOptions = {
-  origin: process.env.FRONTEND_URL, // or wherever your frontend is hosted
-  credentials: true, // to accept cookies via AJAX
+  origin: "https://main--luxury-selkie-3211f8.netlify.app", // Ensure this matches your Netlify URL exactly.
+  credentials: true, // If you're using credentials like cookies or auth headers
 };
 
 app.use(cors(corsOptions));

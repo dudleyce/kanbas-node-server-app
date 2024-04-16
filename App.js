@@ -61,7 +61,7 @@ if (process.env.NODE_ENV !== "development") {
 }  
 
 
-app.use(process.env.PORT || express.json());
+app.use(express.json());
 UserRoutes(app);
 app.listen(4000);
 Hello(app);

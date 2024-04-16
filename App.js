@@ -10,7 +10,7 @@ import cors from "cors";
 import CourseRoutes from "./Kanbas/courses/routes.js";
 import ModuleRoutes from "./Kanbas/modules/routes.js";
 import AssignmentRoutes from "./Kanbas/assignments/routes.js";
-const CONNECTION_STRING =  'mongodb://127.0.0.1:27017/kanbas' || process.env.DB_CONNECTION_STRING;
+const CONNECTION_STRING = process.env.DB_CONNECTION_STRING || 'mongodb://127.0.0.1:27017/kanbas';
 const DB_NAME = "kanbas";
 
 console.log(CONNECTION_STRING);
@@ -63,7 +63,10 @@ if (process.env.NODE_ENV !== "development") {
 
 app.use(express.json());
 UserRoutes(app);
-app.listen(4000);
+const port = process.env.PORT || 4000;
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
 Hello(app);
 Lab5(app);
 ModuleRoutes(app);
